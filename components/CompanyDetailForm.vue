@@ -1,27 +1,55 @@
 <template>
-  <div class="section has-text-centered">
-    <h3 class="title is-3">職務経歴</h3>
-    <div class="company-container" v-if="inputs['company'].length > 0">
-      <div v-for="(input, key, index) in inputs['company']"  v-bind:key=index class="skill-info has-text-left m-6">
-        <div class="level">
-          <h4 class="subtitle is-4 level-left">{{ input.name }} ({{ companyPeriod(input) }})</h4>
-          <button class="button is-info is-light is-small m-1 level-right help_link__button" @click="openModal">
-            経歴を追加
-          </button>
-        </div>
-        <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth has-text-centered">
+  <div class="has-text-centered">
+    <div class="skill-info has-text-left m-6">
+      <div class="level">
+        <h4 class="subtitle is-4 level-left">{{ input.name }} ({{ companyPeriod(input) }})</h4>
+        <p>{{ input.industry }}</p>
+        <p>{{ input.capital }}</p>
+        <button class="button is-info is-light is-small m-1 level-right help_link__button" @click="edit()">
+          経歴を追加
+        </button>
+      </div>
+      <table v-if="input.projects" class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth has-text-centered">
+        <thead>
           <tr>
             <th>期間</th>
-            <th>業務内容</th>
+            <th style="width:60%;">業務内容</th>
             <th></th>
           </tr>
-          <tr>
-            <td>2019.4~2020.2</td>
-            <td class="has-text-left">越境ECサイトの開発</td>
-            <td><button class="button is-small" @click="openModal">編集</button></td>
+        </thead>
+        <tbody>
+          <tr v-for="(projectInput, projectIndex) in input.projects"  v-bind:key=projectIndex @click="edit(projectIndex)">
+            <td class="is-vcentered">{{ companyPeriod(projectInput) }}</td>
+            <td class="has-text-left">
+              <div class="my-2">
+                <span class="has-text-weight-bold">要約</span>
+                <p class="mx-3">{{ projectInput.summery }}</p>
+              </div>
+              <div class="my-2">
+                <span class="has-text-weight-bold">担当フェーズ</span>
+                <p class="mx-3">{{ formattedPhases(projectInput.phases) }}</p>
+              </div>
+              <div class="my-2">
+                <span class="has-text-weight-bold">実績・取り組み等</span>
+                <p class="mx-3" style="white-space: pre-line;">{{ projectInput.achievement }}</p>
+              </div>
+              <div class="my-2">
+                <span class="has-text-weight-bold">組織人数</span>
+                <p class="mx-3">{{ projectInput.numberOfTeam }}</p>
+              </div>
+              <div class="my-2">
+                <span class="has-text-weight-bold">役割</span>
+                <p class="mx-3">{{ projectInput.role }}</p>
+              </div>
+              <div class="my-2">
+                <span class="has-text-weight-bold">言語・環境</span>
+                <p class="mx-3" style="white-space: pre-line;">{{ projectInput.environment }}</p>
+              </div>
+            </td>
+            <td class="is-vcentered"><button class="button is-small" @click="edit(projectIndex)">編集</button></td>
           </tr>
-        </table>
-      </div>
+        </tbody>
+      </table>
     </div>
     <Modal v-if="modalFlag">
       <h4 class="title is-4">業務内容の追加</h4>
@@ -30,25 +58,25 @@
         <div class=columns>
           <div class="column is-vcentered">
             <div class="select is-small">
-              <select v-model="addCompanyDetail['projects']">
+              <select v-model="fromYear">
                 <option v-for="year in years" :value="year">{{ year }}</option>
               </select>
             </div>
             年
             <div class="select is-small">
-              <select v-model="addCompanyDetail['projects']">
+              <select v-model="fromMonth">
                 <option v-for="month in months" :value="month">{{ month }}</option>
               </select>
             </div>
             月から
             <div class="select is-small">
-              <select v-model="addCompanyDetail['projects']">
+              <select v-model="toYear">
                 <option v-for="year in years" :value="year">{{ year }}</option>
               </select>
             </div>
             年
             <div class="select is-small">
-              <select v-model="addCompanyDetail['projects']">
+              <select v-model="toMonth">
                 <option>現在</option>
                 <option v-for="month in months" :value="month">{{ month }}</option>
               </select>
@@ -56,84 +84,62 @@
             月まで
           </div>
         </div>
-        <h4 class="subtitle is-5 is-marginless m-1">プロジェクト内容</h4>
+        <h4 class="subtitle is-5 is-marginless m-1">プロジェクト要約</h4>
         <div class="mb-4">
-          <input class="input is-small" type="text" placeholder="" />
+          <input v-model="summery" class="input is-small" type="text" placeholder="" />
         </div>
         <h4 class="subtitle is-5 is-marginless m-1">担当フェーズ</h4>
-        <span v-for="phase in phases">
-          <input type="checkbox" id="jack" :value="phase">
+        <span v-for="(phase, index) in phasesList">
+          <input v-model="phases" type="checkbox" :id="index" :value="phase">
           <label :for="phase">{{ phase }}</label>
         </span>
         <h4 class="subtitle is-5 is-marginless m-1">実績・取り組み等</h4>
-          <input class="input is-small" type="text" placeholder="" />
+        <textarea v-model="achievement" class="input textarea is-small" placeholder=""></textarea>
         <h4 class="subtitle is-5 is-marginless m-1">組織人数</h4>
+        <div class="columns">
+          <div class="is-2 column is-flex">
+            <input v-model="numberOfTeam" class="input is-small" type="text" placeholder="例: 10" />名
+          </div>
+        </div>
         <h4 class="subtitle is-5 is-marginless m-1">役割</h4>
-          <input class="input is-small" type="text" placeholder="" />
+        <input v-model="role" class="input is-small" type="text" placeholder="" />
         <h4 class="subtitle is-5 is-marginless m-1">言語・環境</h4>
-        <!-- <h4 class="subtitle is-5 is-marginless m-1">カテゴリ</h4>
-        <div class="select is-small">
-          <select v-model="addSkill['category']">
-            <option v-for="(category, index) in categories" :value="index">{{ categories[index] }}</option>
-          </select>
-        </div>
-        <h4 class="subtitle is-5 is-marginless m-1">種別</h4>
-        <div class="mb-4">
-          <input v-model="addSkill['name']" class="input is-small" type="text" placeholder="PHP" />
-        </div>
-        <h4 class="subtitle is-5 is-marginless m-1">経験年数</h4>
-        <div class="select is-small">
-          <select v-model="addSkill['period']">
-            <option v-for="year in years" :value="year">{{ year }}</option>
-          </select>
-        </div>年
-        <h4 class="subtitle is-5 is-marginless m-1">スキルレベル・備考</h4>
-        <div class="mb-4">
-          <input v-model="addSkill['memo']" class="input is-small" type="text" placeholder="通常使用に問題なし" />
-        </div> -->
+        <textarea v-model="environment" class="input textarea is-small" placeholder=""></textarea>
       </div>
       <div class="pt-5">
-        <button class="button is-primary is-medium" @click="send">追加</button>
+        <button class="button is-primary is-medium" @click="save()">追加</button>
         <button class="button is-medium" @click="closeModal">閉じる</button>
       </div>
     </Modal>
-    <CompanyForm :inputs="inputs" @parent-method="parentMethod"></CompanyForm>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import Modal from '~/components/Modal.vue'
-import CompanyForm from '~/components/CompanyForm.vue'
 
 export default Vue.extend({
-  props: ['addInput', 'inputs'],
+  props: ['input'],
   components: {
     Modal,
-    CompanyForm,
   },
   data() {
     return {
       modalFlag: false,
-      addCompanyDetail: {
-        projects: '',
-        category: '',
-        name: '',
-        period: '',
-        memo: '',
-      },
+      selectedProjectKey: null,
+      fromYear: '',
+      fromMonth: '',
+      toYear: '',
+      toMonth: '',
+      summery: '',
+      phases: [],
+      achievement: '',
+      numberOfTeam: '',
+      role: '',
+      environment: '',
     }
   },
   computed : {
-    categories () {
-      return [
-        'OS',
-        '言語',
-        'フレームワーク',
-        'DB',
-        'その他',
-      ]
-    },
     years () {
       const year = new Date().getFullYear()
       return Array.from({length: year - 1969}, (value, index) => year - index)
@@ -153,7 +159,7 @@ export default Vue.extend({
         return period;
       }
     },
-    phases() {
+    phasesList() {
       return [
         '要件定義',
         '基本設計',
@@ -162,6 +168,16 @@ export default Vue.extend({
         '単体テスト',
         '結合テスト',
       ]
+    },
+    formattedPhases() {
+      return function(phases) {
+        let string = '';
+        let lastkey = Object.keys(phases).pop();
+        for (let key in phases) {
+          string += phases[key] + (lastkey !== key ? ',' : ''); 
+        }
+        return string;
+      }
     }
   },
   methods: {
@@ -171,24 +187,50 @@ export default Vue.extend({
     closeModal() {
       this.modalFlag = false
     },
-    send: function(field, data) {
+    edit: function(projectKey=null) {
+      this.selectedProjectKey = projectKey;
+
+      if (projectKey != null) {
+        var project = this.input.projects[this.selectedProjectKey]
+        for (let key in project) {
+          this[key] = project[key];
+        }
+      } else {
+        this.fromYear = '';
+        this.fromMonth = '';
+        this.toYear = '';
+        this.toMonth = '';
+        this.summery = '';
+        this.phases = [];
+        this.achievement = '';
+        this.numberOfTeam = '';
+        this.role = '';
+        this.environment = '';
+      }
+      this.openModal();
+    },
+    save: function() {
+      var inputData = {
+        fromYear: this.fromYear,
+        fromMonth: this.fromMonth,
+        toYear: this.toYear,
+        toMonth: this.toMonth,
+        summery: this.summery,
+        phases: this.phases,
+        achievement: this.achievement,
+        numberOfTeam: this.numberOfTeam,
+        role: this.role,
+        environment: this.environment,
+      }
+      var projects = this.input.projects.slice();
+
+      if (this.selectedProjectKey != null) {
+        projects[this.selectedProjectKey] = inputData;
+      } else {
+        projects.push(inputData);
+      }
+      this.$set(this.input, 'projects', projects);
       this.modalFlag = false;
-      this.$emit('add-click', {field: field, data: data});
-    },
-    sort(ary, key, order) {
-      var reverse = 1;
-      if(order && order.toLowerCase() == "desc") reverse = -1;
-      ary.sort(function(a, b) {
-        if(a[key] < b[key]) 
-          return -1 * reverse;
-        else if(a[key] == b[key]) 
-          return 0;
-        else 
-          return 1 * reverse;
-      });
-    },
-    parentMethod: function(data) {
-      this.send(data.field, data.data);
     },
   }
 })

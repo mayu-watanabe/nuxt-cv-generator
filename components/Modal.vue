@@ -35,6 +35,7 @@
   &__content {
     height: 100%;
     padding: 30px;
+    overflow-y: auto;
   }
 }
 

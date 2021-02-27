@@ -1,38 +1,45 @@
 <template>
-  <div class="has-text-centered">
-    <button class="button is-info is-medium is-fullwidth m-1 help_link__button" @click="openModal">
-      会社を追加
-    </button>
+  <div class="section has-text-centered">
+    <h3 class="title is-3">職務経歴</h3>
+    <div class="company-container" v-if="inputs['company'].length > 0">
+      <div v-for="(input, index) in inputs['company']"  v-bind:key=index class="skill-info has-text-left m-6">
+        <button class="button is-info is-light is-small m-1 level-right help_link__button" @click="edit(index)">
+          会社情報を編集
+        </button>
+        <CompanyDetailForm :input="input"></CompanyDetailForm>
+      </div>
+    </div>
+    <button class="button is-medium m-5" @click="edit()">会社を追加</button>
     <Modal v-if="modalFlag">
       <h4 class="title is-4">会社情報の追加</h4>
       <div class="has-text-left">
         <h4 class="subtitle is-5 is-marginless m-1">会社名</h4>
         <div class="mb-4">
-          <input v-model="addCompany['name']" class="input is-small" type="text" placeholder="会社名" />
+          <input v-model="name" class="input is-small" type="text" placeholder="会社名" />
         </div>
         <h4 class="subtitle is-5 is-marginless m-1">在籍期間</h4>
         <div class=columns>
           <div class="column is-vcentered">
             <div class="select is-small">
-              <select v-model="addCompany['fromYear']">
+              <select v-model="fromYear">
                 <option v-for="year in years" :value="year">{{ year }}</option>
               </select>
             </div>
             年
             <div class="select is-small">
-              <select v-model="addCompany['fromMonth']">
+              <select v-model="fromMonth">
                 <option v-for="month in months" :value="month">{{ month }}</option>
               </select>
             </div>
             月から
             <div class="select is-small">
-              <select v-model="addCompany['toYear']">
+              <select v-model="toYear">
                 <option v-for="year in years" :value="year">{{ year }}</option>
               </select>
             </div>
             年
             <div class="select is-small">
-              <select v-model="addCompany['toMonth']">
+              <select v-model="toMonth">
                 <option>現在</option>
                 <option v-for="month in months" :value="month">{{ month }}</option>
               </select>
@@ -43,30 +50,30 @@
         <h4 class="subtitle is-5 m-1">事業内容</h4>
         <div class="columns">
           <div class="column">
-            <input v-model="addCompany['industry']" class="input is-small" type="text" placeholder="例: SI事業" />
+            <input v-model="industry" class="input is-small" type="text" placeholder="例: SI事業" />
           </div>
         </div>
         <h4 class="subtitle is-5 m-1">資本金</h4>
         <div class="columns">
           <div class="is-3 column is-flex">
-            <input v-model="addCompany['capital']" class="input is-small" type="text" placeholder="例: 6千万" />円
+            <input v-model="capital" class="input is-small" type="text" placeholder="例: 6千万" />円
           </div>
         </div>
         <h4 class="subtitle is-5 m-1">従業員数</h4>
         <div class="columns">
           <div class="is-2 column is-flex">
-            <input v-model="addCompany['employeesNumber']" class="input is-small" type="text" placeholder="例: 100" />名
+            <input v-model="employeesNumber" class="input is-small" type="text" placeholder="例: 100" />名
           </div>
         </div>
         <h4 class="subtitle is-5 m-1">職務内容要約</h4>
         <div class="columns">
           <div class="column">
-            <input v-model="addCompany['summery']" class="input is-small" type="text" placeholder="例: 金融システムの開発・運用" />
+            <input v-model="summery" class="input is-small" type="text" placeholder="例: 金融システムの開発・運用" />
           </div>
         </div>
       </div>
       <div class="pt-5">
-        <button class="button is-primary is-medium" @click="emitParent">追加</button>
+        <button class="button is-primary is-medium" @click="save()">追加</button>
         <button class="button is-medium" @click="closeModal">閉じる</button>
       </div>
     </Modal>
@@ -76,26 +83,28 @@
 <script>
 import Vue from 'vue'
 import Modal from '~/components/Modal.vue'
+import CompanyDetailForm from '~/components/CompanyDetailForm.vue'
 
 export default Vue.extend({
-  props: ['addInput', 'inputs'],
+  props: ['inputs'],
   components: {
     Modal,
+    CompanyDetailForm,
   },
   data() {
     return {
       modalFlag: false,
-      addCompany: {
-        fromYear: '',
-        fromMonth: '',
-        toYear: '',
-        toMonth: '',
-        name: '',
-        industry: '',
-        capital: '',
-        employeesNumber: '',
-        summery: '',
-      },
+      selectedKey: null,
+      fromYear: '',
+      fromMonth: '',
+      toYear: '',
+      toMonth: '',
+      name: '',
+      industry: '',
+      capital: '',
+      employeesNumber: '',
+      summery: '',
+      projects: [],
     }
   },
   computed : {
@@ -105,7 +114,19 @@ export default Vue.extend({
     },
     months () {
       return Array.from({length: 12}, (value, index) => 1 + index)
-    }
+    },
+    companyPeriod() {
+      return function(data) {
+        var period = '';
+        period = period + data.fromYear + '.' + data.fromMonth + ' ~ ';
+        if (data.toMonth == '現在') {
+          period = period + data.toMonth;
+        } else {
+          period = period + data.toYear + '.' + data.toMonth;
+        }
+        return period;
+      }
+    },
   },
   methods: {
     openModal() {
@@ -114,9 +135,50 @@ export default Vue.extend({
     closeModal() {
       this.modalFlag = false
     },
-    emitParent: function() {
+    edit: function(selectedKey=null) {
+      this.selectedKey = selectedKey;
+
+      if (selectedKey != null) {
+        var companies = this.inputs.company[this.selectedKey]
+        for (let key in companies) {
+          this[key] = companies[key];
+        }
+      } else {
+        this.fromYear = '';
+        this.fromMonth = '';
+        this.toYear = '';
+        this.toMonth = '';
+        this.name = '';
+        this.industry = '';
+        this.capital = '';
+        this.employeesNumber = '';
+        this.summery = '';
+        this.projects = [];
+      }
+      this.openModal();
+    },
+    save: function() {
+      var inputData = {
+        fromYear: this.fromYear,
+        fromMonth: this.fromMonth,
+        toYear: this.toYear,
+        toMonth: this.toMonth,
+        name: this.name,
+        industry: this.industry,
+        capital: this.capital,
+        employeesNumber: this.employeesNumber,
+        summery: this.summery,
+        projects: this.projects,
+      }
+      var company = this.inputs.company.slice();
+
+      if (this.selectedKey != null) {
+        company[this.selectedKey] = inputData;
+      } else {
+        company.push(inputData);
+      }
+      this.$set(this.inputs, 'company', company);
       this.modalFlag = false;
-      this.$emit('parent-method', {field: 'company', data: this.addCompany});
     },
   }
 })
