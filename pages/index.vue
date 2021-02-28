@@ -68,18 +68,26 @@ export default Vue.extend({
     save: function (output = false) {
       Vue.use(VueAxios, Axios);
 
+      // 入力情報の保存
       Axios.post('./api',{
         data: this.inputs,
-        output: output,
       })
       .then(response => {
-        //200 status header etc...
-        console.log(response)
+        // console.log(response)
       })
       .catch(error => {
         alert('データの保存に失敗しました。');
         console.log(error.response)
       });
+
+      // PDF出力
+      if (output) {
+        try {
+          this.$outputPdf(this.inputs);
+        } catch (e) {
+          console.log(e);
+        }
+      }
     },
     // addInput: function (eventArgs) {
     //   var arr = {};

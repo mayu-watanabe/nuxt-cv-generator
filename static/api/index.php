@@ -20,11 +20,6 @@ try {
   die(json_encode(['error' => 'File output problem.']));
 }
 
-// PDF出力
-if ($payload['output']) {
-
-}
-
 // 出力結果を返す
 echo json_encode([
   'status' => 'success',

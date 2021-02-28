@@ -16,7 +16,9 @@
     "core-js": "^3.6.5",
     "fs": "0.0.1-security",
     "fs-extra": "^9.1.0",
-    "nuxt": "^2.14.6"
+    "html-to-pdfmake": "^2.1.5",
+    "nuxt": "^2.14.6",
+    "pdfmake": "^0.1.70"
   },
   "devDependencies": {
     "axios": "^0.21.1",
