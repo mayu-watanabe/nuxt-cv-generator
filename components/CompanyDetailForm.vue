@@ -1,26 +1,18 @@
 <template>
   <div class="has-text-centered">
-    <div class="skill-info has-text-left m-6">
-      <div class="level">
-        <h4 class="subtitle is-4 level-left">{{ input.name }} ({{ companyPeriod(input) }})</h4>
-        <p>{{ input.industry }}</p>
-        <p>{{ input.capital }}</p>
-        <button class="button is-info is-light is-small m-1 level-right help_link__button" @click="edit()">
-          経歴を追加
-        </button>
-      </div>
-      <table v-if="input.projects" class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth has-text-centered">
+    <div class="has-text-left">
+      <table v-if="input.projects" class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth has-text-centered my-4">
         <thead>
           <tr>
-            <th>期間</th>
-            <th style="width:60%;">業務内容</th>
-            <th></th>
+            <th style="width:10%;">期間</th>
+            <th style="width:80%;">業務内容</th>
+            <th style="width:10%;">表示</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(projectInput, projectIndex) in input.projects"  v-bind:key=projectIndex @click="edit(projectIndex)">
+          <tr v-for="(projectInput, projectIndex) in input.projects"  v-bind:key=projectIndex>
             <td class="is-vcentered">{{ companyPeriod(projectInput) }}</td>
-            <td class="has-text-left">
+            <td class="has-text-left pointer" @click="edit(projectIndex)">
               <div class="my-2">
                 <span class="has-text-weight-bold">要約</span>
                 <p class="mx-3">{{ projectInput.summery }}</p>
@@ -35,7 +27,7 @@
               </div>
               <div class="my-2">
                 <span class="has-text-weight-bold">組織人数</span>
-                <p class="mx-3">{{ projectInput.numberOfTeam }}</p>
+                <p class="mx-3">{{ projectInput.numberOfTeam }}名</p>
               </div>
               <div class="my-2">
                 <span class="has-text-weight-bold">役割</span>
@@ -46,10 +38,13 @@
                 <p class="mx-3" style="white-space: pre-line;">{{ projectInput.environment }}</p>
               </div>
             </td>
-            <td class="is-vcentered"><button class="button is-small" @click="edit(projectIndex)">編集</button></td>
+            <td class="is-vcentered">
+              <input type="checkbox" :checked="projectInput.publish" @click="changePublish(projectIndex)">
+            </td>
           </tr>
         </tbody>
       </table>
+      <button class="button is-light is-mediam my-3 is-fullwidth has-text-centered" @click="edit()">経歴を追加</button>
     </div>
     <Modal v-if="modalFlag">
       <h4 class="title is-4">業務内容の追加</h4>
@@ -137,6 +132,7 @@ export default Vue.extend({
       numberOfTeam: '',
       role: '',
       environment: '',
+      publish: 1,
     }
   },
   computed : {
@@ -187,6 +183,10 @@ export default Vue.extend({
     closeModal() {
       this.modalFlag = false
     },
+    changePublish(projectKey) {
+      var publish = this.input.projects[projectKey].publish ? 0 : 1;
+      this.$set(this.input.projects[projectKey], 'publish', publish);
+    },
     edit: function(projectKey=null) {
       this.selectedProjectKey = projectKey;
 
@@ -206,6 +206,7 @@ export default Vue.extend({
         this.numberOfTeam = '';
         this.role = '';
         this.environment = '';
+        this.publish = true;
       }
       this.openModal();
     },
@@ -221,6 +222,7 @@ export default Vue.extend({
         numberOfTeam: this.numberOfTeam,
         role: this.role,
         environment: this.environment,
+        publish: this.publish,
       }
       var projects = this.input.projects.slice();
 

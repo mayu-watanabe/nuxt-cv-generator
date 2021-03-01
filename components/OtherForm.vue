@@ -2,12 +2,11 @@
   <div class="section has-text-centered">
     <h3 class="title is-3">自己PR</h3>
     <div class="company-container" v-if="inputs['summery'].length > 0">
-      <div v-for="(input, index) in inputs['summery']"  v-bind:key=index class="skill-info has-text-left m-6">
-        <h4 class="subtitle is-4">{{ input.title }}</h4>
-        <p style="white-space: pre-line;">{{ input.content }}</p>
-        <button class="button is-info is-light is-small m-1 level-right" @click="edit(index)">
-          編集
-        </button>
+      <div v-for="(input, index) in inputs['summery']"  v-bind:key=index class="skill-info has-text-left m-2">
+        <div class="hover p-4" @click="edit(index)">
+          <h4 class="subtitle is-4 my-2">{{ input.title }}</h4>
+          <p style="white-space: pre-line;">{{ input.content }}</p>
+        </div>
       </div>
     </div>
     <button class="button is-medium m-5" @click="edit()">自己PRを追加</button>

@@ -2,10 +2,14 @@
   <div class="section has-text-centered">
     <h3 class="title is-3">職務経歴</h3>
     <div class="company-container" v-if="inputs['company'].length > 0">
-      <div v-for="(input, index) in inputs['company']"  v-bind:key=index class="skill-info has-text-left m-6">
-        <button class="button is-info is-light is-small m-1 level-right help_link__button" @click="edit(index)">
-          会社情報を編集
-        </button>
+      <div v-for="(input, index) in inputs['company']"  v-bind:key=index class="skill-info has-text-left">
+        <div class="hover mx-2" @click="edit(index)">
+          <h4 class="subtitle is-4 level-left">{{ input.name }} ({{ companyPeriod(input) }})</h4>
+          <span>{{ input.summery }}</span><br>
+          <span><b>事業内容</b>: {{ input.industry }}</span>
+          <span><b>資本金</b>: {{ input.capital }}円</span>
+          <span><b>従業員数</b>: {{ input.employeesNumber }}名</span>
+        </div>
         <CompanyDetailForm :input="input"></CompanyDetailForm>
       </div>
     </div>

@@ -51,15 +51,17 @@ const outputPdf = (data) => {
             </tr>
           </thead>
           <tbody>
-          ${company.projects.map(project => `
+          ${company.projects.filter((p) => {
+            return (p.publish)
+          }).map(project => `
             <tr>
               <td style="alignment:center;margin:15">${formatPeriod(project.fromYear, project.fromMonth)}<br>~<br>${formatPeriod(project.toYear, project.toMonth)}</td>
               <td>
-                <b>【プロジェクト要約】</b><p style="margin:10">${project.summery}</p>
-                <b>【担当フェーズ】</b><p style="margin:10">${project.phases}</p>
-                <b>【実績・取り組み等】</b><p style="margin:10">${project.achievement}</p>
+                <b>【プロジェクト要約】</b><p style="margin:8">${project.summery}</p>
+                <b>【担当フェーズ】</b><p style="margin:8">${project.phases}</p>
+                <b>【実績・取り組み等】</b><p style="margin:8">${project.achievement.replace("\n", "<br>")}</p>
               </td>
-              <td>${project.environment}</td>
+              <td><p style="margin:2">${project.environment.replace("\n", "<br>")}</p></td>
               <td>
                 <b>【役割】</b><p style="margin:8">${project.role}</p>
                 <b>【規模】</b><p style="margin:8">${project.numberOfTeam}名</p>
@@ -79,10 +81,10 @@ const outputPdf = (data) => {
       <table>
         <thead>
           <tr>
-            <th style="width:10%">カテゴリ</th>
+            <th style="width:20%">カテゴリ</th>
             <th style="width:15%">種別</th>
             <th style="width:10%">経験年数</th>
-            <th style="width:65%">スキルレベル・備考</th>
+            <th style="width:55%">スキルレベル・備考</th>
           </tr>
         </thead>
         <tbody>` +

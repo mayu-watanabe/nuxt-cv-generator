@@ -3,7 +3,7 @@
     <h3 class="title is-3">スキル</h3>
     <div class="company-container" v-if="inputs['skills'].length > 0">
       <div class="skill-info">
-        <table class="table  is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+        <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth my-4">
           <thead>
             <tr>
               <th>カテゴリ</th>
@@ -13,7 +13,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(input, key, index) in inputs['skills']"  v-bind:key=index @click="edit(key)">
+            <tr v-for="(input, key, index) in inputs['skills']" v-bind:key=index @click="edit(key)" class="pointer">
               <td>{{ input.categoryName }}</td>
               <td>{{ input.name }}</td>
               <td>{{ input.period }}</td>
@@ -23,7 +23,7 @@
         </table>
       </div>
     </div>
-    <button class="button is-medium m-5" @click="edit()">スキルを追加</button>
+    <button class="button is-light is-mediam my-3 is-fullwidth has-text-centered" @click="edit()">スキルを追加</button>
     <Modal v-if="modalFlag">
       <h4 class="title is-4">スキルの追加</h4>
       <div class="has-text-left">

@@ -5,7 +5,7 @@
   </div>
 </template>
 
-<style>
+<style lang="scss">
 html {
   font-family:
     'Source Sans Pro',
@@ -30,5 +30,16 @@ html {
 *::after {
   box-sizing: border-box;
   margin: 0;
+}
+.hover:hover {
+  background-color: #f5f5f5;
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+.pointer:hover {
+  cursor: pointer;
+}
+.section {
+  
 }
 </style>

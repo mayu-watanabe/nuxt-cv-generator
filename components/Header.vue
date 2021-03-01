@@ -1,6 +1,6 @@
 <template>
-  <div class="section has-text-centered">
-    <h1 class="title is-1">CV Generator</h1>
-    <p class="subtitle">JSONで職務経歴書を管理&PDF出力</p>
+  <div class="has-text-centered m-6">
+    <h2 class="title is-3">CVじぇねれーた(IT向け)</h2>
+    <p class="">JSONに職務経歴データをほぞん、PDFで出力</p>
   </div>
 </template>
