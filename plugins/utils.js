@@ -31,7 +31,7 @@ const outputPdf = (data) => {
     <div class="section">
       <h3 class="title_sub">職務経歴</h3>` +
       data.company.map(company => `
-      <li>・${company.name}</li><span style="margin:6">${company.summery}</span>
+      <span class="title_sub_sub">・${company.name} (${formatPeriod(company.fromYear, company.fromMonth)}~${formatPeriod(company.toYear, company.toMonth)})</span><span style="margin:6">${company.summery}</span>
     </div><br>
     `).join('') + `
     <div class="section">
@@ -105,7 +105,7 @@ const outputPdf = (data) => {
         data.summery.map(summery => `
         <div>
           <h6 class="title_sub_sub">${summery.title}</h6>
-          <span>${summery.content}</span>
+          <span>${summery.content.replace("\n", "<br>")}</span>
         </div>
       `).join('')
       }
