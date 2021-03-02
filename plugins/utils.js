@@ -92,7 +92,7 @@ const outputPdf = (data) => {
           <tr>
             <td style="alignment:center">${skill.categoryName}</td>
             <td style="alignment:center">${skill.name}</td>
-            <td style="alignment:center">${skill.period}年</td>
+            <td style="alignment:center">${skill.period}${skill.periodUnit}</td>
             <td>${skill.memo}</td>
           </tr>
         `).join('') +

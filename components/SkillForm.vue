@@ -16,7 +16,7 @@
             <tr v-for="(input, key, index) in inputs['skills']" v-bind:key=index @click="edit(key)" class="pointer">
               <td>{{ input.categoryName }}</td>
               <td>{{ input.name }}</td>
-              <td>{{ input.period }}</td>
+              <td>{{ input.period }}{{ input.periodUnit }}</td>
               <td>{{ input.memo }}</td>
             </tr>
           </tbody>
@@ -44,7 +44,13 @@
           <select v-model="period">
             <option v-for="year in years" :value="year">{{ year }}</option>
           </select>
-        </div>年
+        </div>
+        <div class="select is-small">
+          <select v-model="periodUnit">
+              <option>年</option>
+              <option>ヶ月</option>
+          </select>
+        </div>
         <h4 class="subtitle is-5 is-marginless m-1">スキルレベル・備考</h4>
         <div class="mb-4">
           <input v-model="memo" class="input is-small" type="text" list="memoData" placeholder="通常使用に問題なし" />
@@ -78,6 +84,7 @@ export default Vue.extend({
       categoryName: '',
       name: '',
       period: '',
+      periodUnit: '',
       memo: '',
     }
   },
@@ -113,7 +120,6 @@ export default Vue.extend({
     },
     edit: function(projectKey=null) {
       this.selectedKey = projectKey;
-      console.log(this.inputs.skills[this.selectedKey])
       if (projectKey != null) {
         var skills = this.inputs.skills[this.selectedKey]
         for (let key in skills) {
@@ -124,6 +130,7 @@ export default Vue.extend({
         this.categoryName = '';
         this.name = '';
         this.period = '';
+        this.periodUnit = '';
         this.memo = '';
       }
       this.openModal();
@@ -134,6 +141,7 @@ export default Vue.extend({
         categoryName: this.categories[this.category],
         name: this.name,
         period: this.period,
+        periodUnit: this.periodUnit,
         memo: this.memo,
       }
       var skills = this.inputs.skills.slice();
