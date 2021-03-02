@@ -39,7 +39,12 @@
               </div>
             </td>
             <td class="is-vcentered">
-              <input type="checkbox" :checked="projectInput.publish" @click="changePublish(projectIndex)">
+              <div class="m-2">
+                <input type="checkbox" :checked="projectInput.publish" @click="changePublish(projectIndex)">
+              </div>
+              <div class="m-2">
+                <button class="button is-small" @click="deleteProject(projectIndex)">削除</button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -182,6 +187,9 @@ export default Vue.extend({
     },
     closeModal() {
       this.modalFlag = false
+    },
+    deleteProject: function(key) {
+      return this.input.projects.splice(key, 1);
     },
     changePublish(projectKey) {
       var publish = this.input.projects[projectKey].publish ? 0 : 1;

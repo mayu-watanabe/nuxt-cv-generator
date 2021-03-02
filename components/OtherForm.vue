@@ -7,6 +7,7 @@
           <h4 class="subtitle is-4 my-2">{{ input.title }}</h4>
           <p style="white-space: pre-line;">{{ input.content }}</p>
         </div>
+        <button class="button is-small" @click="deleteOther(index)">削除</button>
       </div>
     </div>
     <div class="has-text-centered">
@@ -53,6 +54,9 @@ export default Vue.extend({
     },
     closeModal() {
       this.modalFlag = false
+    },
+    deleteOther: function(key) {
+      return this.inputs.summery.splice(key, 1);
     },
     edit: function(selectedKey=null) {
       this.selectedKey = selectedKey;

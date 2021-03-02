@@ -3,12 +3,15 @@
     <h4 class="title is-4">職務経歴</h4>
     <div class="company-container" v-if="inputs['company'].length > 0">
       <div v-for="(input, index) in inputs['company']"  v-bind:key=index class="skill-info has-text-left">
-        <div class="hover mx-2" @click="edit(index)">
-          <h4 class="subtitle is-4 level-left">{{ input.name }} ({{ companyPeriod(input) }})</h4>
-          <span>{{ input.summery }}</span><br>
-          <span><b>事業内容</b>: {{ input.industry }}</span>
-          <span><b>資本金</b>: {{ input.capital }}円</span>
-          <span><b>従業員数</b>: {{ input.employeesNumber }}名</span>
+        <div class="hover mx-2">
+          <h4 class="subtitle is-4 level-left is-inline-block">{{ input.name }} ({{ companyPeriod(input) }})</h4>
+          <button class="button is-small" @click="deleteCompany(projectIndex)">削除</button>
+          <div @click="edit(index)">
+            <span>{{ input.summery }}</span><br>
+            <span><b>事業内容</b>: {{ input.industry }}</span>
+            <span><b>資本金</b>: {{ input.capital }}円</span>
+            <span><b>従業員数</b>: {{ input.employeesNumber }}名</span>
+          </div>
         </div>
         <CompanyDetailForm :input="input"></CompanyDetailForm>
       </div>
@@ -140,6 +143,9 @@ export default Vue.extend({
     },
     closeModal() {
       this.modalFlag = false
+    },
+    deleteCompany: function(key) {
+      return this.inputs.company.splice(key, 1);
     },
     edit: function(selectedKey=null) {
       this.selectedKey = selectedKey;

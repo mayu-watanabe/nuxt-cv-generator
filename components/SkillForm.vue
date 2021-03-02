@@ -3,21 +3,23 @@
     <h4 class="title is-4">スキル</h4>
     <div class="company-container" v-if="inputs['skills'].length > 0">
       <div class="skill-info">
-        <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth my-4">
+        <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth my-4 has-text-centered">
           <thead>
             <tr>
-              <th>カテゴリ</th>
+              <th style="width:17%;">カテゴリ</th>
               <th>種別</th>
-              <th>経験年数</th>
+              <th style="width:10%;">経験年数</th>
               <th>スキルレベル・備考</th>
+              <th style="width:5%;">削除</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(input, key, index) in inputs['skills']" v-bind:key=index @click="edit(key)" class="pointer">
-              <td>{{ input.categoryName }}</td>
-              <td>{{ input.name }}</td>
-              <td>{{ input.period }}{{ input.periodUnit }}</td>
-              <td>{{ input.memo }}</td>
+            <tr v-for="(input, key, index) in inputs['skills']" v-bind:key=index class="pointer">
+              <td @click="edit(key)">{{ input.categoryName }}</td>
+              <td @click="edit(key)">{{ input.name }}</td>
+              <td @click="edit(key)">{{ input.period }}{{ input.periodUnit }}</td>
+              <td @click="edit(key)" class="has-text-left">{{ input.memo }}</td>
+              <td><button class="button is-small" @click="deleteSkill(key)">削除</button></td>
             </tr>
           </tbody>
         </table>
@@ -117,6 +119,9 @@ export default Vue.extend({
     },
     closeModal() {
       this.modalFlag = false
+    },
+    deleteSkill: function(key) {
+      return this.inputs.skills.splice(key, 1);
     },
     edit: function(projectKey=null) {
       this.selectedKey = projectKey;
