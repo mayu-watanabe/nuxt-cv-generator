@@ -1,6 +1,6 @@
 <template>
-  <div class="section has-text-centered">
-    <h3 class="title is-3">スキル</h3>
+  <div class="section">
+    <h4 class="title is-4">スキル</h4>
     <div class="company-container" v-if="inputs['skills'].length > 0">
       <div class="skill-info">
         <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth my-4">
@@ -23,7 +23,9 @@
         </table>
       </div>
     </div>
-    <button class="button is-light is-mediam my-3 is-fullwidth has-text-centered" @click="edit()">スキルを追加</button>
+    <div class="has-text-centered">
+      <button class="button is-success is-light is-medium m-5" @click="edit()">スキルを追加</button>
+    </div>
     <Modal v-if="modalFlag">
       <h4 class="title is-4">スキルの追加</h4>
       <div class="has-text-left">
@@ -51,7 +53,7 @@
           </datalist>
         </div>
       </div>
-      <div class="pt-5">
+      <div class="pt-5 has-text-centered">
         <button class="button is-primary is-medium" @click="save()">追加</button>
         <button class="button is-medium" @click="closeModal">閉じる</button>
       </div>

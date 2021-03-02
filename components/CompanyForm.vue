@@ -1,6 +1,6 @@
 <template>
-  <div class="section has-text-centered">
-    <h3 class="title is-3">職務経歴</h3>
+  <div class="section">
+    <h4 class="title is-4">職務経歴</h4>
     <div class="company-container" v-if="inputs['company'].length > 0">
       <div v-for="(input, index) in inputs['company']"  v-bind:key=index class="skill-info has-text-left">
         <div class="hover mx-2" @click="edit(index)">
@@ -13,7 +13,9 @@
         <CompanyDetailForm :input="input"></CompanyDetailForm>
       </div>
     </div>
-    <button class="button is-medium m-5" @click="edit()">会社を追加</button>
+    <div class="has-text-centered">
+      <button class="button is-success is-light is-medium m-5" @click="edit()">会社を追加</button>
+    </div>
     <Modal v-if="modalFlag">
       <h4 class="title is-4">会社情報の追加</h4>
       <div class="has-text-left">
@@ -76,7 +78,7 @@
           </div>
         </div>
       </div>
-      <div class="pt-5">
+      <div class="pt-5 has-text-centered">
         <button class="button is-primary is-medium" @click="save()">追加</button>
         <button class="button is-medium" @click="closeModal">閉じる</button>
       </div>

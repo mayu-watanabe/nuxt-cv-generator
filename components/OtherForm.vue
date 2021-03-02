@@ -1,6 +1,6 @@
 <template>
-  <div class="section has-text-centered">
-    <h3 class="title is-3">自己PR</h3>
+  <div class="section">
+    <h4 class="title is-4">自己PR</h4>
     <div class="company-container" v-if="inputs['summery'].length > 0">
       <div v-for="(input, index) in inputs['summery']"  v-bind:key=index class="skill-info has-text-left m-2">
         <div class="hover p-4" @click="edit(index)">
@@ -9,7 +9,9 @@
         </div>
       </div>
     </div>
-    <button class="button is-medium m-5" @click="edit()">自己PRを追加</button>
+    <div class="has-text-centered">
+      <button class="button is-success is-light is-medium m-5" @click="edit()">自己PRを追加</button>
+    </div>
     <Modal v-if="modalFlag">
       <h4 class="title is-4">自己PRの追加</h4>
       <div class="has-text-left">
@@ -20,7 +22,7 @@
         <h4 class="subtitle is-5 is-marginless m-1">説明文</h4>
         <textarea v-model="content" class="input textarea is-small" placeholder=""></textarea>
       </div>
-      <div class="pt-5">
+      <div class="pt-5 has-text-centered">
         <button class="button is-primary is-medium" @click="save()">追加</button>
         <button class="button is-medium" @click="closeModal">閉じる</button>
       </div>

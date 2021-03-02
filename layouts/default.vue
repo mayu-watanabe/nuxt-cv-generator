@@ -1,7 +1,8 @@
 <template>
   <div>
-    <Header />
-    <Nuxt />
+    <div class="m-6">
+      <Nuxt />
+    </div>
   </div>
 </template>
 
@@ -38,8 +39,5 @@ html {
 }
 .pointer:hover {
   cursor: pointer;
-}
-.section {
-  
 }
 </style>

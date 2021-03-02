@@ -101,7 +101,7 @@
         <h4 class="subtitle is-5 is-marginless m-1">言語・環境</h4>
         <textarea v-model="environment" class="input textarea is-small" placeholder=""></textarea>
       </div>
-      <div class="pt-5">
+      <div class="pt-5 has-text-centered">
         <button class="button is-primary is-medium" @click="save()">追加</button>
         <button class="button is-medium" @click="closeModal">閉じる</button>
       </div>
