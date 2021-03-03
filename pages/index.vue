@@ -18,7 +18,8 @@ import BasicForm from '~/components/BasicForm.vue'
 import CompanyForm from '~/components/CompanyForm.vue'
 import SkillForm from '~/components/SkillForm.vue'
 import OtherForm from '~/components/OtherForm.vue'
-import jsonData from '~/static/data/output.json'
+
+Vue.use(VueAxios, Axios);
 
 export default Vue.extend({
   transition: 'page',
@@ -30,8 +31,30 @@ export default Vue.extend({
   },
   data() {
     return {
-      inputs: jsonData,
+      inputs: {
+        basic: {
+            familyName: "",
+            firstName: "",
+            github: "",
+            website: ""
+        },
+        company: [],
+        skills: [],
+        summery: []
+      },
       currentView: 'BasicForm',
+    }
+  },
+  mounted: function () {
+    const path =  window.location.origin + "/data/output.json";
+    
+    if (this.$load(path) == 200) {
+      Axios.get(path)
+      .then(response => {
+        this.inputs = response.data
+      })
+      .catch(error => {console.log(error)
+      });
     }
   },
   methods: {
@@ -43,8 +66,6 @@ export default Vue.extend({
      * @param output PDF出力を行うか
      */
     save: function (output = false) {
-      Vue.use(VueAxios, Axios);
-
       // 入力情報の保存
       Axios.post('./api',{
         data: this.inputs,

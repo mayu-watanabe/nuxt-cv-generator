@@ -164,6 +164,15 @@ function formatPeriod(year, month) {
   return `${year}.${month}`
 }
 
+const load = (_url) => {
+  var xhr;
+  xhr = new XMLHttpRequest();
+  xhr.open("HEAD", _url, false);  //同期モード
+  xhr.send(null);
+  return xhr.status;
+}
+
 export default ({}, inject) => {
   inject('outputPdf', outputPdf);
+  inject('load', load);
 }

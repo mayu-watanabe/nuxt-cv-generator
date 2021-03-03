@@ -13,7 +13,15 @@ try {
 
 // JSONファイルへ出力
 try {
-  $filePath = 'static/data/output.json';
+  $directoryPath = 'static/data'; 
+  $filePath = $directoryPath . '/output.json';
+
+  if (!file_exists($directoryPath)) {
+    mkdir($directoryPath, 0777);
+  }
+  if (!file_exists($filePath)) {
+    touch($filePath);
+  }
   file_put_contents($filePath, json_encode($payload['data'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 } catch (Exception $e) {
   http_response_code (404);
