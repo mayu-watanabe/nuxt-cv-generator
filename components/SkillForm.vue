@@ -1,29 +1,27 @@
 <template>
-  <div class="section">
+  <div>
     <h4 class="title is-4">スキル</h4>
-    <div class="company-container" v-if="inputs['skills'].length > 0">
-      <div class="skill-info">
-        <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth my-4 has-text-centered">
-          <thead>
-            <tr>
-              <th style="width:17%;">カテゴリ</th>
-              <th>種別</th>
-              <th style="width:10%;">経験年数</th>
-              <th>スキルレベル・備考</th>
-              <th style="width:5%;">削除</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(input, key, index) in inputs['skills']" v-bind:key=index class="pointer">
-              <td @click="edit(key)">{{ input.categoryName }}</td>
-              <td @click="edit(key)">{{ input.name }}</td>
-              <td @click="edit(key)">{{ input.period }}{{ input.periodUnit }}</td>
-              <td @click="edit(key)" class="has-text-left">{{ input.memo }}</td>
-              <td><button class="button is-small" @click="deleteSkill(key)">削除</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="table-container" v-if="inputs.skills.length > 0">
+      <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth my-4 has-text-centered">
+        <thead>
+          <tr>
+            <th style="width:17%;">カテゴリ</th>
+            <th>種別</th>
+            <th style="width:10%;">経験年数</th>
+            <th>スキルレベル・備考</th>
+            <th style="width:5%;">削除</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(input, key, index) in inputs.skills" v-bind:key=index class="pointer">
+            <td @click="edit(key)">{{ input.categoryName }}</td>
+            <td @click="edit(key)">{{ input.name }}</td>
+            <td @click="edit(key)">{{ input.period }}{{ input.periodUnit }}</td>
+            <td @click="edit(key)" class="has-text-left">{{ input.memo }}</td>
+            <td><button class="button is-small" @click="deleteSkill(key)">削除</button></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="has-text-centered">
       <button class="button is-success is-light is-medium m-5" @click="edit()">スキルを追加</button>
@@ -155,7 +153,7 @@ export default Vue.extend({
       } else {
         skills.push(inputData);
       }
-      this.sort(this.inputs.skills, 'category');
+      this.sort(skills, 'category');
       this.$set(this.inputs, 'skills', skills);
       this.modalFlag = false;
     },

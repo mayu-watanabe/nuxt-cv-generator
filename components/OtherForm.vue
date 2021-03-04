@@ -1,5 +1,5 @@
 <template>
-  <div class="section">
+  <div>
     <h4 class="title is-4">自己PR</h4>
     <div class="company-container" v-if="inputs['summery'].length > 0">
       <div v-for="(input, index) in inputs['summery']"  v-bind:key=index class="skill-info has-text-left m-2">

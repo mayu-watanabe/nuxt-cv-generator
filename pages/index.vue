@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div>
-      <Header @click-download="save(true)"/>
+    <Header @click-download="save(true)" @click-save="save(false)" />
+    <div class="py-6">
       <transition name="component-fade" mode="out-in">
         <component :is="currentView" :inputs="inputs"></component>
       </transition>
-      <Footer :currentView="currentView" @click-view="changeComponent" @click-save="save(false)" />
     </div>
+    <Footer :currentView="currentView" @click-view="changeComponent" />
   </div>
 </template>
 
@@ -33,10 +33,10 @@ export default Vue.extend({
     return {
       inputs: {
         basic: {
-            familyName: "",
-            firstName: "",
-            github: "",
-            website: ""
+            familyName: "しょくむ",
+            firstName: "太郎",
+            github: "https://github.com/shokumu-taro",
+            website: "https://shokumu-taro.com"
         },
         company: [],
         skills: [],
