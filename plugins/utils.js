@@ -1,6 +1,6 @@
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from "~/static/js/vfs_fonts";
-import htmlToPdfmake from "html-to-pdfmake";
+import htmlToPdfmake from "~/static/js/html-to-pdfmake";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
@@ -148,7 +148,9 @@ const outputPdf = (data) => {
         alignment: "right",
       },
     },
-    content: [htmlToPdfmake(html, {tableAutoSize:true})],
+    content: [
+      htmlToPdfmake(html, { tableAutoSize: true })
+    ],
   }; 
   pdfMake.createPdf(docDefinition).download();
 }
