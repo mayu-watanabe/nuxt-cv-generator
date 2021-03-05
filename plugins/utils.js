@@ -4,11 +4,11 @@ import htmlToPdfmake from "html-to-pdfmake";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
-  GenShinGothic: {
-    normal: "GenShinGothic-Normal-Sub.ttf",
-    bold: "GenShinGothic-Normal-Sub.ttf",
-    italics: "GenShinGothic-Normal-Sub.ttf",
-    bolditalics: "GenShinGothic-Normal-Sub.ttf",
+  ipagp: {
+    normal: "ipagp.ttf",
+    bold: "ipagp.ttf",
+    italics: "ipagp.ttf",
+    bolditalics: "ipagp.ttf",
   }
 };
 
@@ -114,7 +114,7 @@ const outputPdf = (data) => {
   const docDefinition = { 
     pageSize: 'A4',
     defaultStyle: {
-      font: "GenShinGothic",
+      font: "ipagp",
       fontSize: 11,
     },
     styles: {
