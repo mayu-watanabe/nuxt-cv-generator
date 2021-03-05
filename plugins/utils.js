@@ -21,32 +21,32 @@ const outputPdf = (data) => {
     ${(!data.basic) ? `` : `
     <div class="section">
       <h3 class="title_sub">基本情報</h3>` +
-      '<span class="title_sub_sub">・氏名</span>' +
+      '<span class="title_sub_sub">【氏名】</span>' +
       ((data.basic.familyName && data.basic.firstName) ? `<span style="margin:6">${data.basic.familyName} ${data.basic.firstName}</span>` : ``) +
-      ((data.basic.github) ? `<span class="title_sub_sub">・GitHub</span><span style="margin:6">${data.basic.github}</span>` : ``) +
-      ((data.basic.website) ? `<span class="title_sub_sub">・Website</span><span style="margin:6">${data.basic.website}</span>` : ``)
+      ((data.basic.github) ? `<span class="title_sub_sub">【GitHub】</span><span style="margin:6">${data.basic.github}</span>` : ``) +
+      ((data.basic.website) ? `<span class="title_sub_sub">【Website】</span><span style="margin:6">${data.basic.website}</span>` : ``)
       }
     </div><br>
     ${(!data.company.length) ? `` : `
     <div class="section">
       <h3 class="title_sub">職務経歴</h3>` +
       data.company.map(company => `
-      <span class="title_sub_sub">・${company.name} (${formatPeriod(company.fromYear, company.fromMonth)}~${formatPeriod(company.toYear, company.toMonth)})</span><span style="margin:6">${company.summery}</span>
+      <span class="title_sub_sub">・${company.name} (${formatPeriod(company.fromYear, company.fromMonth)}〜${formatPeriod(company.toYear, company.toMonth)})</span><span style="margin:6">${company.summery}</span>
     </div><br>
     `).join('') + `
     <div class="section">
       <h3 class="title_sub">開発経歴</h3>` +
       data.company.map(company => `
       <div>
-        <h5>${company.name} (${formatPeriod(company.fromYear, company.fromMonth)}~${formatPeriod(company.toYear, company.toMonth)})</h5>
-        <span>資本金: ${company.capital}円　従業員数: ${company.employeesNumber}名　事業内容: ${company.industry}</span>
+        <h5>${company.name} (${formatPeriod(company.fromYear, company.fromMonth)}〜${formatPeriod(company.toYear, company.toMonth)})</h5>
+        <span>事業内容: ${company.industry}　　資本金: ${company.capital}円　　従業員数: ${company.employeesNumber}名</span>
         <br>
         <table>
           <thead>
             <tr>
               <th style="width:15%">期間</th>
-              <th style="width:50%">業務内容</th>
-              <th style="width:20%">環境</th>
+              <th style="width:45%">業務内容</th>
+              <th style="width:25%">環境</th>
               <th style="width:15%">役割／規模</th>
             </tr>
           </thead>
@@ -55,13 +55,13 @@ const outputPdf = (data) => {
             return (p.publish)
           }).map(project => `
             <tr>
-              <td style="alignment:center;margin:15">${formatPeriod(project.fromYear, project.fromMonth)}<br>~<br>${formatPeriod(project.toYear, project.toMonth)}</td>
+              <td style="alignment:center;margin:8">${formatPeriod(project.fromYear, project.fromMonth)}<br>〜<br>${formatPeriod(project.toYear, project.toMonth)}</td>
               <td>
                 <b>【プロジェクト要約】</b><p style="margin:8">${project.summery}</p>
                 <b>【担当フェーズ】</b><p style="margin:8">${project.phases}</p>
-                <b>【実績・取り組み等】</b><p style="margin:8">${project.achievement.replace("\n", "<br>")}</p>
+                <b>【実績・取り組み等】</b><p style="margin:8">${project.achievement.replace(/\n/g, "<br>")}</p>
               </td>
-              <td><p style="margin:2">${project.environment.replace("\n", "<br>")}</p></td>
+              <td><p style="margin:2">${project.environment.replace(/\n/g, "<br>")}</p></td>
               <td>
                 <b>【役割】</b><p style="margin:8">${project.role}</p>
                 <b>【規模】</b><p style="margin:8">${project.numberOfTeam}名</p>
@@ -99,13 +99,13 @@ const outputPdf = (data) => {
         `</tbody>
       </table>
     </div><br>`}
-    ${ (!data.skills.length) ? `` : `
+    ${ (!data.summery.length) ? `` : `
     <div class="section">
-      <h3 class="title_sub">自己PR</h3>` + 
+      <h3 class="title_sub pdf-pagebreak-before">自己PR</h3>` + 
         data.summery.map(summery => `
         <div>
           <h6 class="title_sub_sub">${summery.title}</h6>
-          <span>${summery.content.replace("\n", "<br>")}</span>
+          <span>${summery.content.replace(/\n/g, "<br>")}</span>
         </div>
       `).join('')
       }
@@ -121,6 +121,7 @@ const outputPdf = (data) => {
     defaultStyle: {
       font: "ipagp",
       fontSize: 11,
+      lineHeight: 1.2,
     },
     styles: {
       'html-span': {
@@ -151,8 +152,11 @@ const outputPdf = (data) => {
     content: [
       htmlToPdfmake(html, { tableAutoSize: true })
     ],
+    pageBreakBefore: function(currentNode) {
+      return currentNode.style && currentNode.style.indexOf('pdf-pagebreak-before') > -1;
+    }
   }; 
-  pdfMake.createPdf(docDefinition).download();
+  pdfMake.createPdf(docDefinition).open();
 }
 
 function getDateToday () {
