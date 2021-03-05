@@ -113,6 +113,11 @@ const outputPdf = (data) => {
   </div>`;
   const docDefinition = { 
     pageSize: 'A4',
+    footer: function (currentPage, pageCount) {
+      return [
+        { text: `- ${currentPage} -`, alignment: 'center', fontSize: 10 }
+      ]
+    },
     defaultStyle: {
       font: "ipagp",
       fontSize: 11,
