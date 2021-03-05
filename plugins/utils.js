@@ -29,15 +29,15 @@ const outputPdf = (data) => {
     </div><br>
     ${(!data.company.length) ? `` : `
     <div class="section">
-      <h3 class="title_sub">職務経歴</h3>` +
+      <h3 class="title_sub pdf-pagebreak-before">職務経歴</h3>` +
       data.company.map(company => `
       <span class="title_sub_sub">・${company.name} (${formatPeriod(company.fromYear, company.fromMonth)}〜${formatPeriod(company.toYear, company.toMonth)})</span><span style="margin:6">${company.summery}</span>
     </div><br>
     `).join('') + `
     <div class="section">
-      <h3 class="title_sub">開発経歴</h3>` +
+      <h3 class="title_sub pdf-pagebreak-before">開発経歴</h3>` +
       data.company.map(company => `
-      <div>
+      <div class="pdf-pagebreak-before">
         <h5>${company.name} (${formatPeriod(company.fromYear, company.fromMonth)}〜${formatPeriod(company.toYear, company.toMonth)})</h5>
         <span>事業内容: ${company.industry}　　資本金: ${company.capital}円　　従業員数: ${company.employeesNumber}名</span>
         <br>
@@ -76,7 +76,7 @@ const outputPdf = (data) => {
     }
     ${ (!data.skills.length) ? `` :`
     <div class="section">
-      <h3 class="title_sub">プログラミングスキル</h3>
+      <h3 class="title_sub pdf-pagebreak-before">プログラミングスキル</h3>
       <br>
       <table>
         <thead>
@@ -104,7 +104,7 @@ const outputPdf = (data) => {
       <h3 class="title_sub pdf-pagebreak-before">自己PR</h3>` + 
         data.summery.map(summery => `
         <div>
-          <h6 class="title_sub_sub">${summery.title}</h6>
+          <h6 class="title_sub_sub pdf-pagebreak-before">${summery.title}</h6>
           <span>${summery.content.replace(/\n/g, "<br>")}</span>
         </div>
       `).join('')
@@ -153,7 +153,7 @@ const outputPdf = (data) => {
       htmlToPdfmake(html, { tableAutoSize: true })
     ],
     pageBreakBefore: function(currentNode) {
-      return currentNode.style && currentNode.style.indexOf('pdf-pagebreak-before') > -1;
+      return currentNode.style && currentNode.style.indexOf('pdf-pagebreak-before') > -1 && currentNode.startPosition.top > 700;
     }
   }; 
   pdfMake.createPdf(docDefinition).open();
