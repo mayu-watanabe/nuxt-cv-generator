@@ -12,7 +12,7 @@
             <th style="width:5%;">削除</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody is="draggable" v-model="inputs.skills" tag="tbody">
           <tr v-for="(input, key, index) in inputs.skills" v-bind:key=index class="pointer">
             <td @click="edit(key)">{{ input.categoryName }}</td>
             <td @click="edit(key)">{{ input.name }}</td>
@@ -70,11 +70,13 @@
 <script>
 import Vue from 'vue'
 import Modal from '~/components/Modal.vue'
+import draggable from 'vuedraggable'
 
 export default Vue.extend({
   props: ['inputs'],
   components: {
     Modal,
+    draggable,
   },
   data() {
     return {

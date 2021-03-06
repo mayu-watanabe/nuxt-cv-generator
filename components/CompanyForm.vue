@@ -2,18 +2,20 @@
   <div>
     <h4 class="title is-4">職務経歴</h4>
     <div class="company-container" v-if="inputs['company'].length > 0">
-      <div v-for="(input, index) in inputs['company']"  v-bind:key=index class="skill-info has-text-left">
-        <div class="hover mx-2">
-          <h4 class="subtitle is-4 level-left is-inline-block">{{ input.name }} ({{ companyPeriod(input) }})</h4>
-          <button class="button is-small" @click="deleteCompany(projectIndex)">削除</button>
-          <div @click="edit(index)">
-            <span>{{ input.summery }}</span><br>
-            <span><b>事業内容</b>: {{ input.industry }}</span>
-            <span><b>資本金</b>: {{ input.capital }}円</span>
-            <span><b>従業員数</b>: {{ input.employeesNumber }}名</span>
+      <div is="draggable" v-model="inputs['company']">
+        <div v-for="(input, index) in inputs['company']"  v-bind:key=index class="skill-info has-text-left">
+          <div class="hover mx-2">
+            <h4 class="subtitle is-4 level-left is-inline-block">{{ input.name }} ({{ companyPeriod(input) }})</h4>
+            <button class="button is-small" @click="deleteCompany(projectIndex)">削除</button>
+            <div @click="edit(index)">
+              <span>{{ input.summery }}</span><br>
+              <span><b>事業内容</b>: {{ input.industry }}</span>
+              <span><b>資本金</b>: {{ input.capital }}円</span>
+              <span><b>従業員数</b>: {{ input.employeesNumber }}名</span>
+            </div>
           </div>
+          <CompanyDetailForm :input="input"></CompanyDetailForm>
         </div>
-        <CompanyDetailForm :input="input"></CompanyDetailForm>
       </div>
     </div>
     <div class="has-text-centered">
@@ -93,12 +95,14 @@
 import Vue from 'vue'
 import Modal from '~/components/Modal.vue'
 import CompanyDetailForm from '~/components/CompanyDetailForm.vue'
+import draggable from 'vuedraggable'
 
 export default Vue.extend({
   props: ['inputs'],
   components: {
     Modal,
     CompanyDetailForm,
+    draggable,
   },
   data() {
     return {

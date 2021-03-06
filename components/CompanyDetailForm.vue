@@ -9,7 +9,7 @@
             <th style="width:10%;">表示</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody is="draggable" v-model="input.projects" tag="tbody">
           <tr v-for="(projectInput, projectIndex) in input.projects"  v-bind:key=projectIndex>
             <td class="is-vcentered">{{ companyPeriod(projectInput) }}</td>
             <td class="has-text-left pointer" @click="edit(projectIndex)">
@@ -117,11 +117,13 @@
 <script>
 import Vue from 'vue'
 import Modal from '~/components/Modal.vue'
+import draggable from 'vuedraggable'
 
 export default Vue.extend({
   props: ['input'],
   components: {
     Modal,
+    draggable,
   },
   data() {
     return {

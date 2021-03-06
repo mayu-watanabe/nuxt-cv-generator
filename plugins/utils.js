@@ -32,8 +32,8 @@ const outputPdf = (data) => {
       <h3 class="title_sub pdf-pagebreak-before">職務経歴</h3>` +
       data.company.map(company => `
       <span class="title_sub_sub">・${company.name} (${formatPeriod(company.fromYear, company.fromMonth)}〜${formatPeriod(company.toYear, company.toMonth)})</span><span style="margin:6">${company.summery}</span>
-    </div><br>
-    `).join('') + `
+    </div>
+    `).join('') + `<br>
     <div class="section">
       <h3 class="title_sub pdf-pagebreak-before">開発経歴</h3>` +
       data.company.map(company => `
@@ -153,7 +153,7 @@ const outputPdf = (data) => {
       htmlToPdfmake(html, { tableAutoSize: true })
     ],
     pageBreakBefore: function(currentNode) {
-      return currentNode.style && currentNode.style.indexOf('pdf-pagebreak-before') > -1 && currentNode.startPosition.top > 700;
+      return currentNode.style && currentNode.style.indexOf('pdf-pagebreak-before') > -1 && currentNode.startPosition.top > 650;
     }
   }; 
   pdfMake.createPdf(docDefinition).open();

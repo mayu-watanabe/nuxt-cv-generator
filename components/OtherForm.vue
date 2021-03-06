@@ -2,12 +2,14 @@
   <div>
     <h4 class="title is-4">自己PR</h4>
     <div class="company-container" v-if="inputs['summery'].length > 0">
-      <div v-for="(input, index) in inputs['summery']"  v-bind:key=index class="skill-info has-text-left m-2">
-        <div class="hover p-4" @click="edit(index)">
-          <h4 class="subtitle is-4 my-2">{{ input.title }}</h4>
-          <p style="white-space: pre-line;">{{ input.content }}</p>
+      <div is="draggable" v-model="inputs['summery']">
+        <div v-for="(input, index) in inputs['summery']"  v-bind:key=index class="skill-info has-text-left m-2">
+          <div class="hover p-4" @click="edit(index)">
+            <h4 class="subtitle is-4 my-2">{{ input.title }}</h4>
+            <p style="white-space: pre-line;">{{ input.content }}</p>
+          </div>
+          <button class="button is-small" @click="deleteOther(index)">削除</button>
         </div>
-        <button class="button is-small" @click="deleteOther(index)">削除</button>
       </div>
     </div>
     <div class="has-text-centered">
@@ -34,11 +36,13 @@
 <script>
 import Vue from 'vue'
 import Modal from '~/components/Modal.vue'
+import draggable from 'vuedraggable'
 
 export default Vue.extend({
   props: ['inputs'],
   components: {
     Modal,
+    draggable,
   },
   data() {
     return {
