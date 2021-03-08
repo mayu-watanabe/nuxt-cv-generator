@@ -26,6 +26,14 @@
           v-model="inputs.basic.website" class="input" type="text" placeholder="ポートフォリオサイトのURL"
         />
       </div>
+      <div class="field-label is-normal has-text-left">
+        <label class="label">職務要約</label>
+        <textarea v-model="inputs.basic.summery" class="input textarea is-small" placeholder=""></textarea>
+      </div>
+      <div class="field-label is-normal has-text-left">
+        <label class="label">生かせる経験・知識・技術</label>
+        <textarea v-model="inputs.basic.experience" class="input textarea is-small" placeholder=""></textarea>
+      </div>
     </div>
   </div>
 </template>

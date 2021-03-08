@@ -33,10 +33,12 @@ export default Vue.extend({
     return {
       inputs: {
         basic: {
-            familyName: "しょくむ",
-            firstName: "太郎",
-            github: "https://github.com/shokumu-taro",
-            website: "https://shokumu-taro.com"
+            familyName: '',
+            firstName: '',
+            github: '',
+            website: '',
+            summery: '',
+            experience: '',
         },
         company: [],
         skills: [],
