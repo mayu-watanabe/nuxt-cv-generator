@@ -93,9 +93,9 @@
 
 <script>
 import Vue from 'vue'
-import Modal from '~/components/Modal.vue'
-import CompanyDetailForm from '~/components/CompanyDetailForm.vue'
 import draggable from 'vuedraggable'
+const Modal = () => import('~/components/Modal.vue')
+const CompanyDetailForm = () => import('~/components/CompanyDetailForm.vue')
 
 export default Vue.extend({
   props: ['inputs'],

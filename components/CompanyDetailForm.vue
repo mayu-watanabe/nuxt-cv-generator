@@ -116,8 +116,8 @@
 
 <script>
 import Vue from 'vue'
-import Modal from '~/components/Modal.vue'
 import draggable from 'vuedraggable'
+const Modal = () => import('~/components/Modal.vue')
 
 export default Vue.extend({
   props: ['input'],
