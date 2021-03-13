@@ -14,10 +14,10 @@
 import Vue from 'vue'
 import Axios from 'axios'
 import VueAxios from 'vue-axios'
-import BasicForm from '~/components/BasicForm.vue'
-import CompanyForm from '~/components/CompanyForm.vue'
-import SkillForm from '~/components/SkillForm.vue'
-import OtherForm from '~/components/OtherForm.vue'
+const BasicForm = () => import('~/components/BasicForm.vue')
+const CompanyForm = () => import('~/components/CompanyForm.vue')
+const SkillForm = () => import('~/components/SkillForm.vue')
+const OtherForm = () => import('~/components/OtherForm.vue')
 
 Vue.use(VueAxios, Axios);
 

@@ -34,6 +34,7 @@ export default {
     '@nuxtjs/bulma',
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
+    '@nuxtjs/pwa',
   ],
 
   proxy: {

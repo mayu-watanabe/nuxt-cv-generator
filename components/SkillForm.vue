@@ -88,7 +88,47 @@ export default Vue.extend({
       period: '',
       periodUnit: '',
       memo: '',
+      validation: {
+        category: false,
+        // categoryName: false,
+        name: false,
+        period: false,
+        periodUnit: false,
+        memo: false,
+      },
     }
+  },
+  filters: {
+    categoryValidator: {
+      write: function (val) {
+        this.validation.category = !!val
+        return val
+      }
+    },
+    nameValidator: {
+      write: function (val) {
+        this.validation.name = !!val
+        return val
+      }
+    },
+    periodValidator: {
+      write: function (val) {
+        this.validation.period = !!val
+        return val
+      }
+    },
+    periodUnitValidator: {
+      write: function (val) {
+        this.validation.periodUnit = !!val
+        return val
+      }
+    },
+    memoValidator: {
+      write: function (val) {
+        this.validation.memo = !!val
+        return val
+      }
+    },
   },
   computed : {
     categories () {
